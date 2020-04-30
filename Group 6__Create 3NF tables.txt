@@ -1,0 +1,97 @@
+CREATE TABLE types(
+type_id integer,
+type varchar(10),
+PRIMARY KEY (type_id)
+);
+CREATE TABLE tv_ratings(
+rating_id integer,
+rating varchar(10),
+PRIMARY KEY (rating_id)
+);
+CREATE TABLE genres(
+genre_id integer,
+listed_in text,
+PRIMARY KEY (genre_id)
+);
+CREATE TABLE actors(
+actor_id integer,
+actor_name text,
+PRIMARY KEY (actor_id)
+);
+CREATE TABLE countries(
+country_id integer,
+country varchar(300),
+PRIMARY KEY (country_id)
+);
+CREATE TABLE duration(
+duration_id integer,
+duration varchar(10),
+PRIMARY KEY (duration_id)
+);
+ CREATE TABLE show (
+  show_id integer PRIMARY KEY,
+  title text,
+  release_year numeric(4,0),
+  duration varchar(10),
+  description text);
+  
+  CREATE TABLE date_added(
+  show_id integer PRIMARY KEY,
+  date_added date,
+  FOREIGN KEY (show_id) REFERENCES show (show_id));
+  CREATE TABLE customer_rating(
+  show_id integer PRIMARY KEY,
+  rating_level text);
+  
+   CREATE TABLE directors (
+  director_id integer PRIMARY KEY,
+  name varchar(200));
+  
+  CREATE TABLE movie_director(
+  show_id integer,
+  director_id integer,
+  PRIMARY KEY (show_id, director_id),
+  FOREIGN KEY (show_id) REFERENCES show (show_id),
+  FOREIGN KEY (director_id ) REFERENCES directors(director_id));
+  
+CREATE TABLE customer_ratings(
+show_id integer PRIMARY KEY,
+average_rating numeric(2,1),
+votes_number integer,
+FOREIGN KEY (show_id) REFERENCES show (show_id)
+);
+CREATE TABLE show_duration(
+show_id integer,
+duration_id integer,
+PRIMARY KEY (show_id, duration_id),
+FOREIGN KEY (show_id) REFERENCES show (show_id),
+FOREIGN KEY (duration_id ) REFERENCES duration(duration_id)
+);
+CREATE TABLE show_genres (
+show_id integer,
+genre_id integer,
+PRIMARY KEY (show_id, genre_id),
+FOREIGN KEY (show_id) REFERENCES show (show_id),
+FOREIGN KEY (genre_id) REFERENCES genres(genre_id)
+);
+CREATE TABLE show_countries(
+show_id integer,
+country_id integer,
+PRIMARY KEY (show_id, country_id),
+FOREIGN KEY (show_id) REFERENCES show (show_id),
+FOREIGN KEY (country_id) REFERENCES countries(country_id)
+);
+CREATE TABLE show_type(
+show_id integer,
+type_id integer,
+PRIMARY KEY (show_id, type_id),
+FOREIGN KEY (show_id) REFERENCES show (show_id),
+FOREIGN KEY (type_id ) REFERENCES types(type_id)
+);
+CREATE TABLE show_cast(
+show_id integer,
+actor_id integer,
+PRIMARY KEY (show_id, actor_id),
+FOREIGN KEY (show_id) REFERENCES show (show_id),
+FOREIGN KEY (actor_id) REFERENCES actors(actor_id)
+);
