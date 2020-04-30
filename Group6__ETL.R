@@ -1,5 +1,4 @@
 ####Group6 
-####CHECKPOINT 4 
 ###ETL Process
 
 
