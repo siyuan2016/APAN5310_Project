@@ -164,6 +164,27 @@ types_df <- type_df[c('type_id', 'type')]
 #load customer data to the database
 dbWriteTable(con, name="types", value=types_df, row.names=FALSE, append=TRUE)
 
+##ETL OF TABLE genres
+#clean the data
+listed_in <- as.factor(df$listed_in)
+df$listed_in[is.na(df$listed_in)] <- 0
+#split genres
+s_genres = strsplit(as.character(df$listed_in), split=",", fixed=TRUE)
+#create genres_id
+genres_df <- data.frame('listed_in' = unique(s_genres))
+genres_df$genres_id <- 1:nrow(genres_df)
+# Create a new expanded dataframe
+df_genres = data.frame(
+  genres_id=rep(df$genres_id, sapply(s_genres, length)),
+  listed_in=unlist(s_genres))
+# Create temporary dataframe with unique cast
+genres = data.frame('genres_id'= df_genres$genres_id,
+                  'genres'= df_genres$genres)
+genres_uni = unique(genres)
+genres_uni$genres_id = 1:nrow(genres_uni)
+
+dbWriteTable(con, name="cast", value=cast_uni, row.names=FALSE, append=TRUE)
+
 
 ##ETL OF TABLE show_type
 show_type_list <- sapply(df$type,function(x) type_df$type_id [type_df$type == x]  )
@@ -176,7 +197,16 @@ show_type
 
 dbWriteTable(con, name="show_type", value=show_type , row.names=FALSE, append=TRUE)
 
+#ETL of show_genres  
+show_genres_list <- sapply(df$listed_in,function(x) genres_df$genres_id [genres_df$genres== x]  )
+head(show_genres_list)
+df$genre_id<-show_genres_list
+df
+show_genres <-  df[c('show_id','genre_id')]
+head(show_genres)
+dbWriteTable(con, name="show_genres", value=show_genres , row.names=FALSE, append=TRUE)
 
+                         
 ##ETL OF TABLE tv_ratings
 rating_df <- data.frame('rating' = unique(df$rating))
 rating_df$rating_id <- 1:nrow(rating_df)
