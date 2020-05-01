@@ -147,7 +147,7 @@ install.packages("ggplot2", dep=T)
 
 #Load the csv file in a dataframe, df:
 
-df <- read.csv('/Users/wanida/Desktop/netflix_titles.csv')
+df <- read.csv('/Users/siyuan/Desktop/netflix_titles.csv')
 
 #ETL of TABLE show
 length(unique(data$show_id)) == nrow(data)
